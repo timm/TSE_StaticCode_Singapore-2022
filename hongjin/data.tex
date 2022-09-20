@@ -1,0 +1,71 @@
+
+ \subsection{Data}
+This paper tested the efficacy of instance, label,
+boundary and parameter engineering using the revised
+and repaired data from 
+  Kang et al. paper~\cite{kang2022detecting}.
+  
+  Recall that
+Kang et al. manually labelled warnings from the same projects studied by Yang et al.~\cite{yang2021learning} to assess the level of agreement between human annotators and the heuristic.
+The manual labelling was performed by two human annotators. 
+One annotator is an undergraduate student, while the other is a graduate student with two years of industrial experience.
+When the annotators disagreed on the label of a warning, they discussed the disagreement to reach a consensus. 
+While they achieved a high level of agreement, achieving a Cohen's Kappa of above 0.8, 
+manual labelling is costly, requiring human analysis of both the source code and the commit history of the code.
+That said, considering the subsequent evolution of the source code allows the annotators to analyze each warning with a greater amount of context.
+% That said, this 
+These labels are essential
+% label is essential 
+since it removed closed warnings which are not actionable (e.g., the warnings may have been removed for reasons unrelated to the Findbugs warning). 
+
+Two other filters employed by Kang et al. where:
+\bi
+\item
+Unconfirmed actionable warnings were removed;
+\item
+False alarms were randomly sampled to ensure a balance of labels (40\% of the data were actionable) consistent with the rest of the experiments.
+\ei
+One of the complaints of the Kang et al. paper~\cite{kang2022detecting}  against
+earlier work~\cite{yang2021learning} was that, for data that comes with some time stamp, it is inappropriate to use future data to predict past labels. To avoid that problem,
+in this study, we sorted the Kang et al. data by   time stamps,
+then used 80\% of the past data to predict the remaining 20\% future labels.
+
+
+
+The Kang et al. data comes from eight projects and we analyzed
+each project's data separately. The 80:20 train:test splits
+ resulted in the train:test sets shown in Table~\ref{tab:data}
+ (exception: for MAVEN, we split 50:50, since there are only 4 samples in total). 
+ 
+
+Prior studies on static analysis warnings have worked with datasets with a wide range of actionable warnings. For example, Heckman and Williams~\cite{heckman2008establishing} experimented on 2 datasets, one of which had a percentage of actionable warnings of 89\%. 
+Imtiaz et al.~\cite{imtiaz2019developers} experimented on several datasets, one of which had a percentage of 49.5\% of actionable warnings. 
+Therefore, the percentage of actionable warnings in our experiments is consistent with some prior studies. 
+
+ 
+Pre-experimentally, we were concerned that learning from the smaller data sets of Table~\ref{tab:data} would complicate
+our ability to make any conclusions from this data.
+That is, we needed to know:
+
+\begin{formal}\noindent
+\rqn{5} \textit{Are larger training sets necessary (for the task of recognizing actionable static code warnings)?}
+\end{formal}
+
+This turned out not to be a critical issue.
+As shown below, the performance patterns   
+in our experiments were   stable across all the six smaller data sets used in this study.
+
+% The dataset used in the experiments on Kang et al.~\cite{kang2022detecting} used the same experimental setting as Yang et al.'s work~\cite{yang2021learning}; i.e. SVMs with the rbf kernel and balanced class weights
+% In this dataset, the labels were initially inferred through the closed-warning heuristic, then further refined from human annotation.
+
+% While Kang et al. labelled over 1,000+ warnings, not all of them fit the same experimental setup (belonging to revisions other than the one training revision and testing revision).
+% The breakdown of the manually labelled data can be viewed in Table \ref{tab:data}. In our experiments, we discard non-numeric features in this manually labeled dataset.
+
+Technical aside: In other papers, we have run repeated trials with multiple 80:20
+splits for training:test data. 
+This was not here since some of our data sets are too small (see the first few rows of  Table~\ref{tab:data})
+that any reduction in the training set size might disadvantage the learning process. 
+Hence, the external validity claims of this paper come from patterns seen in eight different software projects.
+
+
+

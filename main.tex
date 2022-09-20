@@ -1,0 +1,706 @@
+
+
+%%*************************************************************************
+%% Legal Notice:
+%% This code is offered as-is without any warranty either expressed or
+%% implied; without even the implied warranty of MERCHANTABILITY or
+%% FITNESS FOR A PARTICULAR PURPOSE! 
+%% User assumes all risk.
+%% In no event shall the IEEE or any contributor to this code be liable for
+%% any damages or losses, including, but not limited to, incidental,
+%% consequential, or any other damages, resulting from the use or misuse
+%% of any information contained here.
+%%
+%% All comments are the opinions of their respective authors and are not
+%% necessarily endorsed by the IEEE.
+%%
+%% This work is distributed under the LaTeX Project Public License (LPPL)
+%% ( http://www.latex-project.org/ ) version 1.3, and may be freely used,
+%% distributed and modified. A copy of the LPPL, version 1.3, is included
+%% in the base LaTeX documentation of all distributions of LaTeX released
+%% 2003/12/01 or later.
+%% Retain all contribution notices and credits.
+%% ** Modified files should be clearly indicated as such, including  **
+%% ** renaming them and changing author support contact information. **
+%%*************************************************************************
+
+
+
+
+
+
+\documentclass[compsoc,10pt]{IEEEtran}
+% Some/most Computer Society conferences require the compsoc mode option,
+% but others may want the standard conference format. 
+\usepackage[labelfont=bf,textfont={bf}]{caption}
+
+%\usepackage{cite}
+\newcommand{\IT}{\sffamily{SNEAK}}
+\usepackage{dblfloatfix}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage[numbers]{natbib}
+\usepackage{amsmath}
+\usepackage{url}
+\usepackage{colortbl}
+\usepackage[table]{xcolor}
+\usepackage{rotating}
+\usepackage{amssymb}
+\usepackage{blindtext}
+\usepackage{wrapfig}
+\usepackage{graphicx}
+\usepackage{csvsimple}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{float}
+\usepackage{aliascnt}
+\usepackage{multirow}
+\usepackage{soul}
+\usepackage{color, colortbl}
+\usepackage{babel,adjustbox,booktabs,multirow}
+\usepackage[most]{tcolorbox}
+\usepackage{subcaption}
+\usepackage{balance}
+\usepackage{pifont}
+\usepackage{changepage}
+\usepackage{framed}
+
+\newcommand{\tick}{\ding{51}}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+
+\algnewcommand\algorithmicforeach{\textbf{foreach}}
+\algdef{S}[FOR]{ForEach}[1]{\algorithmicforeach\ #1\ \algorithmicdo}
+
+\newaliascnt{eqfloat}{equation}
+\newfloat{eqfloat}{h}{eqflts}
+\floatname{eqfloat}{Equation}
+
+\newtcolorbox{myquote}{colback=lightgray!20!white,colframe=yellow!75!black,grow to right by=-10mm,grow to left by=-10mm,
+    boxrule=0pt,boxsep=0pt,breakable} \makeatletter
+
+\newcommand{\blockquote}[1]{  \begin{myquote}  #1  \end{myquote}  }
+
+
+\newcommand*{\ORGeqfloat}{}
+\let\ORGeqfloat\eqfloat
+\def\eqfloat{%
+  \let\ORIGINALcaption\caption
+  \def\caption{%
+    \addtocounter{equation}{-1}%
+    \ORIGINALcaption
+  }%
+  \ORGeqfloat
+}
+
+\makeatletter
+\renewenvironment{framed}{%
+ \def\FrameCommand##1{\hskip\@totalleftmargin
+ \fboxsep=\FrameSep\fbox{##1}
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed}
+\makeatother
+
+% environment derived from framed.sty: see leftbar environment definition
+\definecolor{formalshade}{rgb}{0.93,0.93,0.93}
+\newcommand{\gray}{\cellcolor{lightgray}}
+
+\definecolor{darkblue}{rgb}{0.2, 0.2, 0.2}
+
+\newenvironment{formal}{%
+  \def\FrameCommand{%
+    \hspace{1pt}%
+    {\color{darkblue}\vrule width 2pt}%
+    {\color{formalshade}\vrule width 4pt}%
+    \colorbox{formalshade}%
+  }%
+  \MakeFramed{\advance\hsize-\width\FrameRestore}%
+  \noindent\hspace{-1pt}% disable indenting first paragraph
+  \begin{adjustwidth}{}{7pt}%
+  \vspace{2pt}\vspace{2pt}%
+}
+{%
+  \vspace{3pt}\end{adjustwidth}\endMakeFramed%
+}
+
+\newcommand{\rqn}[1]{\underline{\textbf{RQ#1:}}}
+
+\newcommand{\quart}[4]{\begin{adjustbox}{max width=.1\textwidth}\begin{picture}(100,5)%1
+    {\color{black}\put(#3,2){\circle*{7}}\put(#1,2){\line(1,0){#2}}}\end{picture}\end{adjustbox}}
+
+\usepackage{enumitem}
+\setlist{nosep} 
+\newcommand{\bi}{\begin{itemize}}
+	\newcommand{\ei}{\end{itemize}}
+\newcommand{\be}{\noindent\begin{enumerate}}
+	\newcommand{\ee}{\noindent\end{enumerate}}
+
+\newcommand{\bluecheck}{}%
+\DeclareRobustCommand{\bluecheck}{%
+  \tikz\fill[scale=0.4, color=blue]
+  (0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;%
+}
+
+\usepackage[tikz]{bclogo}
+\newenvironment{RQ}[1]%
+{\noindent\begin{minipage}[c]{\linewidth}%
+\begin{bclogo}[couleur=gray!20,%
+                arrondi=0,logo=\none,% 
+                ombre=true%
+                ]{{\small  ~#1}}}%
+{\end{bclogo}\vspace{2mm}\end{minipage}}
+
+%% reviewing
+\newcommand{\blue}[1]{{\color{blue}{#1}}}
+\newcommand{\reponse}[1]{\noindent{#1\\}}
+\newcommand{\todo}[1]{\textbf{\color{red}{#1}}}
+\newcommand{\subsect}[1]{\SS\ref{subsect:#1}}
+
+%% Response text prefix
+\newcommand{\respto}[1]{
+\fcolorbox{black}{black!15}{%
+\label{resp:#1}%
+\bf\scriptsize R{#1}}}
+
+%% Response text prefix
+\newcommand{\bareresp}[1]{
+\fcolorbox{black}{black!15}{%
+\bf\scriptsize R{#1}}}
+\newcommand{\BLUE}{\color{blue}}
+\newcommand{\BLACK}{\color{black}}
+\newcommand{\ORANGE}{\color{orange}}
+
+%% Cite responses
+\newcommand{\citeresp}[1]{%
+{(see }\fcolorbox{black}{black!15}{%
+\bf\scriptsize R{#1}}~{{on page \pageref{resp:#1})}}}%
+
+% Response environment
+\newenvironment{response}[1]{
+    \BLUE \respto{#1}
+} {
+    \BLACK
+}
+
+\newenvironment{draftresponse}[1]{
+    \ORANGE \respto{#1}
+} {
+    \BLACK
+}
+
+
+
+
+\begin{document}
+
+% paper title
+% Titles are generally capitalized except for words such as a, an, and, as,
+% at, but, by, for, in, nor, of, on, or, the, to and up, which are usually
+% not capitalized unless they are the first or last word of the title.
+% Linebreaks \\ can be used within to get better formatting as desired.
+% Do not put math or special symbols in the title.
+%\IEEEspecialpapernotice{(Invited Paper)}
+
+
+\title{How to Find Actionable Static Analysis Warnings: A Case Study with FindBugs}
+
+
+\author{Rahul Yedida, 
+Hong Jin Kang,
+Huy Tu, Xueqi Yang, David Lo~\IEEEmembership{Fellow,~IEEE}, 
+        Tim~Menzies,~\IEEEmembership{Fellow,~IEEE}
+\IEEEcompsocitemizethanks{\IEEEcompsocthanksitem R. Yedida, X. Yang and  T. Menzies are with the Department
+of Computer Science, North Carolina State University, Raleigh, USA.
+ \protect\\
+E-mail: ryedida@ncsu.edu, xyang37@ncsu.edu, timm@ieee.org
+\IEEEcompsocthanksitem H.J. Kang and D. Lo are with the School of Computing and Information Systems, Singapore Management University, Singapore.
+\protect\\
+E-mail: hjkang.2018@smu.edu.sg, davidlo@smu.edu.sg
+\IEEEcompsocthanksitem  H. Tu is with Meta Platforms, Inc. 
+E-mail: huyqtu7@gmail.com}}
+
+
+% The paper headers
+\markboth{IEEE Transactions on Software Engineering}%
+{Yedida \MakeLowercase{\textit{et al.}}: How to Recognize and Avoid Static Code Analysis False Alarms}
+
+% make the title area
+\IEEEtitleabstractindextext{
+\begin{abstract}
+Automatically generated static
+code warnings  suffer from
+a large number of false alarms.
+Hence, developers
+only take action
+on a small percent of those warnings. 
+To better predict which  static code warnings
+should {\em not} be ignored, 
+  we suggest that      analysts
+  need to look deeper
+  into their algorithms to find choices
+ that better improve the particulars of their specific problem. Specifically,
+ we show here that effective predictors
+ of such warnings can be created   by methods
+that {\em locally adjust} the decision boundary
+(between actionable warnings and others).
+ These  methods yield a  new high water-mark for recognizing actionable static code warnings.
+For eight open-source Java projects
+(CASSANDRA, JMETER, COMMONS, LUCENE-SOLR,
+ANT, TOMCAT, DERBY)
+ we    achieve perfect test results on 4/8 datasets
+ and, overall, a median AUC (area under the true negatives, true positives curve) of 92\%. 
+
+
+% Our conclusions are two-fold.
+ 
+% had many corruptions. In the 
+
+% Data set used to train such tools suffer
+% from 
+
+% X Yang, J Chen, R Yedida, Z Yu, T Menzies
+
+
+% X Yang, Z Yu, J Wang, T Menzies
+
+% A recent work by \citet{yang2021learning} claimed that recognizing static code false alarms was an intrinsically easy problem, citing the low intrinsic dimensionality of the data. This study used SVMs to effectively predict actionable static code warnings. However, it was refuted by an ICSE '22 paper by \citet{kang2022detecting}, who detailed how the data used by the former study was incorrectly labeled and provided a new dataset with corrected labels. 
+
+% In this paper, we revisit the problem using the new, corrected data. We show that like the study by \citet{yang2021learning}, the corrected data still has low intrinsic dimensionality. Moreover, classical ML models are still the best choice for predicting actionable static code warnings (median AUC = 1.0). However, manual labeling, as was done to rectify the dataset, remains an expensive task. Therefore, we explore the problem under the semi-supervised setting. In this setting, classical ML models are insufficient, leading us to turn to neural approaches for solving this task. In the spirit of testing simpler algorithms before more complex ones \cite{fu2017easy}, we first started with feedforward networks (also called artificial neural networks), using the GHOST framework proposed by \citet{yedida2021value}, which uses hyper-parameter optimization along with a ``fuzzy sampling'' technique to achieve state-of-the-art results in defect prediction. We augment the feedforward learner used by GHOST with a trivial semi-supervised learning approach. This yields new high water-mark results on the dataset (while using 9.5\% of the labels), achieving perfect test results on 4/8 datasets (median AUC = 0.92). We characterize this final approach, which we call ``GHOST2'', as a combination of several different engineering techniques.  Finally, we perform an ablation study that tests whether each component of GHOST2 is necessary, including testing deep learners (specifically, convolutional neural networks, and the CodeBERT \cite{feng2020codebert} system), which shows that all parts of GHOST2 are necessary (and that feedforward networks are sufficient) and contribute to its performance.
+
+% Our contributions are many-fold: (a) we present a case study of a successful collaboration between authors of the \citet{yang2021learning} and \citet{kang2022detecting} studies (b) we show that even with the revised dataset, the problem is still intrinsically simple (c) we develop a novel system called ``GHOST2'' that achieves a new high water-mark in performance on the corrected data under the low label availability setup (d) we show a ``small data'' effect where neural approaches outperform other approaches on smaller datasets ($<30$ samples), a reversal of common belief (e) we characterize learning problems as a set of engineering techniques, each of which needs to be carefully attended to, rather than using tools off-the-shelf for each (f) we explain why fuzzy sampling helps optimization.
+        
+
+\end{abstract}
+
+
+
+% Note that keywords are not normally used for peer review papers.
+\begin{IEEEkeywords}
+software analytics, static analysis; false alarms; locality,  hyperparameter optimization
+\end{IEEEkeywords}}
+
+\maketitle
+
+% For peer review papers, you can put extra information on the cover
+% page as needed:
+% \ifCLASSOPTIONpeerreview
+% \begin{center} \bfseries EDICS Category: 3-BBND \end{center}
+% \fi
+%
+% For peer review papers, this IEEEtran command inserts a page break and
+% creates the second title. It will be ignored for other modes.
+\IEEEpeerreviewmaketitle
+
+% xxxx from david: comfercing to fix refautions t commin
+
+
+\section{Introduction}\label{intro}
+  
+
+Static analysis (SA) tools report errors
+in source code, without needing to execute that code. This makes them very popular in industry. For example, the FindBugs tool~\cite{ayewah2010google}
+%of Figure~\ref{fig:fb} 
+has been downloaded over a million times. Unfortunately, due to the imprecision of static analysis and the different contexts where bugs appear, SA tools often suffer from
+a large number of false alarms that are deemed to be not actionable~\cite{tomassi2021real}.
+Hence, developers never act on most of 
+their warnings \cite{heckman2008establishing, heckman2009model, kim2007warnings}. 
+ Previous research work shows that   35\% to
+91\% of SA warnings reported as bugs by SA tools 
+are routinely
+ignored by developers~\cite{heckman2009model,heckman2008establishing,kim07}.
+
+Those  false alarms produced by SA tools are a significant barrier to the wide-scale adoption of these SA tools ~\cite{johnson2013don,ChristakisB16}. 
+Accordingly, in 2018~\cite{wang2018there}, 2020~\cite{yang2021learning}
+and 2021~\cite{yang2021understanding}, Wang et al. and Yang et al. proposed
+data miners that  found the subset of static code warnings that
+developers found ``actionable'' (i.e. those that
+motivate developers to change the code). 
+But in 2022, Kang et al.~\cite{kang2022detecting} showed that of the
+31,000+ records used by  
+Wang et al. and Yang et al., they could only generate 768  error-free records-- which meant all the prior Wang and Yang et al. results need to be revisited.
+
+When Kang et al. tried to build predictors from the 768 good records, they found that their   best-performing predictors were not effective
+(e.g., very low median AUCs of 41\%), for details see 
+Table~\ref{tab:initial_svm}. 
+  Hence the following remains an open research question:
+ 
+ 
+
+\begin{formal}\noindent\rqn{1} \textit{For detecting actionable static code warnings,
+what data mining methods should we recommend?}
+\end{formal}
+\noindent
+This paper conjectures that prior work failed to find good predictors because of a {\em locality problem}. In the learners
+used in that prior work, the decision boundary between  
+between actionable warnings and other
+was determined by a single {\em global policy}. 
+\BLUE \respto{1a11.1} In detail, changes to the values of the hyper-parameters of the SVM learner that they employed make \textit{global} changes to the decision boundary (i.e., the global shape of the decision boundary is modified); instead, we argue for \textit{local} changes to the decision boundary. This allows us to make different local adjustments at different regions of the decision boundary to adapt it to the local data.
+\BLACK
+ 
+More specifically, we conjecture  that:
+ \begin{quote}
+ {\em 
+ For complex data, \underline{\bf global} treatments  
+   perform worse  than \underline{\bf localized} treatments
+ which   adjust different parts of the  landscape in 
+ different ways.}
+ \end{quote}
+ To test this, we use    {\em local} treatments to adjust the decision boundary
+  in different ways in different parts of the data.
+ \be
+\item
+{\em Boundary engineering}:  adjust the decision boundary near our data points;
+\item
+{\em Label engineering}:   control outliers
+in a local region by using just a small fraction of those local labels;
+\item
+{\em Instance engineering}: addressing class imbalance in local regions of the data
+\item
+These treatments are combined with
+{\em parameter engineering}  to control   how we   build models.
+ \ee
+We call this combination of   treatments
+GHOST2 (GHOST2 extends GHOST~\cite{yedida2021value} which just used one of these treatments).  When researchers propose an intricate
+combination of 
+ideas, it is prudent to ask several questions:
+   
+\begin{formal}\noindent 
+\rqn{2} {\em Does GHOST2's  combination of {\em instance}, {\em label}, {\em boundary}  and {\em parameter} engineering, reduce the complexity of  the decision boundary?}
+\end{formal}
+
+Later in this paper, we will show evidence that our proposed methods
+simplifies the ``error landscape'' of a data set (a concept which we will discuss, in detail in \S\ref{rx}).
+
+ 
+\begin{formal}\noindent 
+\rqn{3} {\em Does  GHOST2's  use of {\em instance}, {\em label}, {\em boundary}  and {\em parameter} treatments improve predictions?} 
+\end{formal}
+  
+ Using data from Kang et al. (768 records from  eight open-source Java projects), we show that
+ GHOST2  was able to generate excellent predictors for actionable static code warnings.
+
+
+
+
+\begin{figure*}[!t]
+\begin{center}
+\includegraphics[width=3.8in]{tim/guaranteedDereference.png}\end{center}
+\caption{Example of a static analysis warning, generated via the FindBugs
+tool~\cite{ayewah2010google}.}\label{fig:fb}
+\end{figure*}
+
+%Given that GHOST2 has many parts, we should also ask:
+ \begin{formal}\noindent   
+\rqn{4} {\em Are all parts of GHOST2 necessary; i.e. would something
+simpler also achieve the overall goal?}
+\end{formal}
+
+   
+   To answer {\bf RQ4},   this paper   reports an 
+{\em ablation study} that removes
+one treatment at a time from our four recommended treatments. For the purposes of 
+recognizing and avoiding
+static code analysis false alarms, it will be shown that,
+ignoring any part of our proposed solution   leads
+to worse predictors.
+Hence, while we do not know if  changes to our design might lead to {\em better}
+predictors, the
+ablations study does show that removing anything from that design makes matters {\em worse}.
+ 
+   
+This work has six key contributions:
+\be
+\item
+As a way to address, in part, the methodological problems raised by Kang et al. GHOST2 makes its conclusions using   a small percentage of the raw data (10\%). That is, to address the issues
+of corrupt data found by Kang et al., we say ``use less data'' and, for the data that is used,   ``reflect more on that data''.
+\item
+A case study of successful open collaboration
+by software analytics researchers. 
+This paper is joint work between the Yang et al. and Kang et al. teams
+from the United States and Singapore. By recognizing a shared problem, then sharing  data and tools, in eight weeks these two teams produced a new
+state-of-the-art result that improves on all of the past  
+papers by these two teams (within this research arena). This illustrates the value of open and collaborative science, where groups with different initial findings come together to help each other in improving the state-of-the-art for the benefit of science and industry.
+\item
+Motivation for changing the way we train  software analytics newcomers.  It may not be enough to just reflect on the
+different properties of off-the-shelf learners.
+% Rather, future improvements in software analytics may require more than, e.g., just applying off-the-shelf deep learning. 
+Analysts may need to be skilled in
+boundary, label, parameter and instance engineering.
+\item GHOST2's  design, implementation, and evaluation.
+\item A new high-water mark in software analytics for learning actionable static code warnings.
+\item A reproduction package  that other researchers can use to repeat/refute/improve on our results\footnote{ \url{https://github.com/yrahul3910/static-code-warnings/}}.
+
+
+\ee
+% Perhaps, in the future,
+% instead of rushing to refute   each
+% others' work, it might serve the goals
+% of science and industry better if we rushed
+% to collaborations with each  other to help
+% % each other improve our work.
+The rest of this paper is structured as follows. The next section offers some background notes. \S \ref{problem} discusses the locality
+problem for complex data sets and \S \ref{rx}
+offers details on our treatments.  \S \ref{sec:methods} describes our experimental methods
+after which, in \S \ref{sec:results}, we show that GHOST2      outperforms (by a large margin) prior results from Kang et al. We discuss threats to validity for our study in \S \ref{sec:threats}, before a discussion in \S \ref{sec:discussion} and concluding in \S \ref{sec:conclusion}.
+
+ 
+
+
+Before all that,  we digress to   stress the following:
+\bi
+\item
+A  learned model must be tested on the kinds of data expected in practice. 
+\item
+Hence,  
+  any treatments to the data  (e.g.  via instance, label, boundary engineering) 
+  {\em are restricted to the training data, and do {\bf not} affect the test  data.}
+\ei
+
+
+
+
+% Science is meant to be about a community critiquing and improving each other's ideas. We offer here a successful example of such a community interaction where teams from Singapore and the US successfully worked together. Initially, the Singapore team refuted the results of the other in a high-profile ICSE’22 paper. Subsequently, the teams worked together to produce new results that clarified and improved the old work.
+ 
+% We write to suggest that this kind of interaction should be routine, and not some rare exceptional case. As seen here, software analytics is not just the application of some turnkey off-the-shelf algorithm; rather, to improve on prior results it is necessary to perform an extensive excursion across a wide range of tools. As shown below, that excursion can take some strange paths. For example, below we improve on the prior state of the art using five methods which, according to the truisms of our field, should not have worked. Yet, they did suggest that SE data is very diverse, and successful analytics requires a wide range of applications– sometimes even using things that established wisdom says should not work.
+
+
+
+% \hl{Add more stuff here}
+
+ 
+ 
+\input{hongjin/front}
+
+\input{rahul/anewhope}
+
+\section{Experimental Methods}
+\label{sec:methods}
+ 
+
+
+\input{hongjin/data}
+
+\input{rahul/models}
+
+\input{rahul/approach}
+
+\input{rahul/results}
+ 
+ \input{tim/end}
+\section*{Acknowledgments}
+This work was partially supported by an NSF Grant \#1908762.
+ 
+ 
+{\footnotesize \bibliographystyle{plainnat}
+\balance
+\bibliography{tim/tim.bib,rahul/rahul.bib,hongjin/hongjin.bib,rahul/other.bib}
+} 
+
+
+\begin{IEEEbiography}[{\includegraphics[width=.9in,clip,keepaspectratio]{tim/rahul.jpeg}}] {Rahul Yedida} is a PhD student in Computer Science at NC State University. His research interests include automated software engineering and machine learning for software engineering.   \url{https://ryedida.me}.
+\end{IEEEbiography}
+\vspace{-20mm}
+\begin{IEEEbiography}[{\includegraphics[width=.9in,clip,keepaspectratio]{tim/hongjin.jpg.png}}]{Hong Jin Kang  } is a Ph.D. student at Singapore Management University. His research interests include machine learning for software engineering, and mining rules and specifications.
+ \url{https://kanghj.github.io/}.
+\end{IEEEbiography}
+\vspace{-20mm}
+\begin{IEEEbiography}[{\includegraphics[width=.9in,clip,keepaspectratio]{tim/KT.JPG}}]{Huy Tu} holds a Ph.D. in Computer Science from North
+Carolina State University, Raleigh, NC. They explored frugal labeling 
+processes while improving the data quality for software analytics. Now, they works for Meta Platforms, Inc.  \newline \url{https://kentu.us}.
+\end{IEEEbiography}
+\vspace{-20mm}
+\begin{IEEEbiography}[{\includegraphics[width=.9in,clip,keepaspectratio]{tim/sherry.png}}]{Xueqi Yang} is a Ph.D. student in Computer Science at North Carolina State University.  Her research interests include automatic static analysis and applying human-assisted AI algorithms in software engineering.  \url{https://xueqiyang.github.io/}.
+\end{IEEEbiography}
+\vspace{-20mm}
+\begin{IEEEbiography}[{\includegraphics[width=.8in,clip,keepaspectratio]{tim/davidlo.jpg}}]{David Lo} is a Professor in Computer Science at Singapore Management University. His research interests include software analytics, empirical software engineering, cybersecurity, and SE4AI.   \url{http://www.mysmu.edu/faculty/davidlo/}.
+\end{IEEEbiography}
+\vspace{-20mm}
+\begin{IEEEbiography}[{\includegraphics[width=.9in,clip,keepaspectratio]{tim/menzies.png}}]{Tim Menzies} (IEEE Fellow, Ph.D. UNSW, 1995)
+is a Professor in computer science  at NC State University, USA.
+His research interests include software engineering (SE), data mining, artificial intelligence, and search-based SE, open access science.  \url{http://menzies.us}.
+\end{IEEEbiography}
+ 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % REVIEWER RESPONSES ROUND 1 %
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+
+\setcounter{page}{1}
+\pagenumbering{roman}
+\normalsize
+\twocolumn
+\newpage
+% \twocolumn
+%\linenumbers
+\section*{Response to Reviewers}
+\subsection*{Response to AE}
+
+\begin{formal}
+Dear authors, as you will see the reviewers have now commented on your manuscript.  All 3 reviewers think this is a highly relevant paper for TSE, but they also have concerns with regard to the methodology and the depth of explanation in the paper. I hope that the feedback can help you make improvements in these areas.
+\end{formal}
+
+Thank you for this opportunity to revise this paper. We wish to thank the reviewers for their careful and insightful comments. Our revisions are marked as \respto{2a(1-3)} and \respto{3a(1-3)} respectively. All changed text is highlighted in \textcolor{blue}{blue}.
+
+Also, we have a question for you. We \underline{thought} that Figure1 was
+useful to set the scene. Now reviewer1 says otherwise so perhaps we failed
+in that regard. But please, what is your view? Delete figure1?
+
+\subsection{Response to Reviewer 1}
+
+\begin{formal}
+The topic is interesting, since indeed static analyzers tend to list enormous amounts of suggestions, which are not manageable by software engineers. On top of that, methodologically, the paper is great, and to my understanding (though not an expert on machine learning) very sound.
+\end{formal}
+
+\begin{response}{1a1}
+Thank you for your kind words. Much appreciated!
+\end{response}
+
+\begin{formal}
+However, as a person oriented to the practical benefits of software engineering research, the paper has left me with a huge gap on what a practitioner can learn from this work. I agree that the paper can be of interest to researchers, since it presents a very interesting and novel methodology, but unfortunately there is not practical implication at all.
+\end{formal}
+
+\begin{draftresponse}{1a2}
+Timm to Rahul: extract business case from odler apers. Make 2.1 another half page long Should we say that this tool could be incorporated into commercial applications such as IDEs, and be used as a filter step before warnings are shown to developers?
+\end{draftresponse}
+
+\begin{formal}
+Additionally, the paper stays at a very high-level, treating the models as complete black-boxes, not giving any indication on which parameters of the warnings can consist them actionable.
+\end{formal}
+
+\begin{draftresponse}{1a3}
+\begin{itemize}
+    \item LIME (Sherry)
+    \item \url{https://stats.stackexchange.com/a/261012/212844} (Rahul)
+\end{itemize}
+\end{draftresponse}
+
+\begin{formal}
+the paper’s title is a bit overselling: As far as I can understand, the dataset comes solely from FindBugs. Although I agree that FindBugs is a tool that deserves investigation, the results cannot be generalized to all static analyzers.  Also, not all static analyzers are there for finding “bugs”, for instance Sonar is a static analyzer for finding maintainability problems, or PMD for security problems, CheckStyle for style conventions, etc.
+\end{formal}
+
+\begin{response}{1a4}
+We agree! We have modified our paper title to indicate that our work is specifically related to the FindBugs tool.
+\end{response}
+
+\begin{formal}
+Figure 1 is not necessary, since a screenshot from FindBugs outputs does not provide any clear benefit for the readability nor the motivation
+\end{formal}
+
+\begin{response}{1a5}
+Thank you for your feedback.  We had thought that the figure make it clear
+to absolute beginners in this field what is going on.  If you are adamant in the regard, please say so and we will of course  delete it.
+\end{response}
+
+\begin{formal}
+References used to support your claim on the lack of actionable outcomes from SAs are quite old, about 15 years ago. Maybe the situation has changed? Please update
+\end{formal}
+
+\begin{draftresponse}{1a6}
+Sherry
+\end{draftresponse}
+
+\begin{formal}
+The term ``actionable'' might not be correct. Something that is actionable, means that you can do something with this suggestion, giving motivation to do something is a bit different
+\end{formal}
+
+\begin{draftresponse}{1a7}
+That's a fair point! We used ``actionable'' to mean, ``\textit{capable} of being acted on'' (Merriam-Webster's definition), to imply that these are static warnings that are less likely to be ignored by developers, for various reasons. We found it difficult to encapsulate the various reasons for ignoring static code warnings in one word.
+\end{draftresponse}
+
+\begin{formal}
+``…showed that: (a)….'' There is no (b)
+\end{formal}
+
+\begin{response}{1a8}
+Thank you for pointing that out! We have fixed that issue now.
+\end{response}
+
+\begin{formal}
+The motivation that past work of the two groups was faulty, the published results were not correct, a new paper comes to solve the problem is a bit strange… How do you know what the new data extraction is correct? In later stages you refer to 2 human evaluators that disagreed with the original characterization. To me the level of evidence to characterize a published past study as not useful is not strong. What if the 2 evaluators had a biased mindset? The two evaluators were the authors of [25] and of this work. After reading [25] I found only one sentence explaining the process of tagging the warnings. What is the industrial experience of these two authors so as to be considered as “golden set”? I am extremely skeptical on this. Since the “faulty” research that needs to be revised (since the results were not correct) partially belongs to the authors of this work, what is your plan for that?  Are you planning to contact EMSE and ESWA editors?
+\end{formal}
+
+\begin{response}{1a9}
+The labeling of the warnings were done with consideration of both the source code that the warnings were reported on as well as the subsequent evolution of the source code based on the projects’ revision control history. This provides a large amount of context to be analyzed by the annotators. One annotator was an undergraduate student while the other had 2 years of industrial experience. The annotators achieved strong inter-annotator agreement (Cohen’s Kappa $>$ 0.8) when labeling the warnings independently, which suggests that using the additional context of the revision control history led to high quality labels. We will provide more details of the construction of the dataset. 
+
+We add the following information regarding the construction of the dataset in Section 5.1 (Data) with modifications in yellow:
+
+\begin{blockquote}
+{Recall that Kang et al. manually labelled warnings from the same projects studied by Yang et al. [54] to assess the level of agreement between human annotators and the heuristic. The manual labelling was performed by two human annotators. \hl{One annotator is an undergraduate student, while the other is a graduate student with two years of industrial experience.} When the annotators disagreed on the label of a warning, they discussed the disagreement to reach a consensus. While they achieved a high level of agreement, achieving a Cohen’s Kappa of above 0.8, manual labelling is costly, requiring human analysis of both the source code and the commit history of the code. That said, \hl{considering the subsequent evolution of the source code allows the annotators to analyze each warning with a greater amount of context.} These labels are essential since it removed closed warnings which are not actionable (e.g., the warnings may have been removed for reasons unrelated to the Findbugs warning)}
+\end{blockquote}
+
+While the findings of the prior studies have to be weakened, there are still important insights that are relevant to both researchers and practitioners. To aid the discovery of this paper which builds on the prior studies, we will add a note linking to this paper on the artifact websites of the previous papers.
+\end{response}
+
+\begin{formal}
+Why shall a software engineer be interested in checking which data mining methods are recommended? This sound like very theoretical research question. A software engineer would care about which warnings she needs to consider. What are their common characteristics
+\end{formal}
+
+\begin{response}{1a10}
+You raise an important point! Although our results have practical applications, we believe there is value in adding theoretic understanding to the SE (and more broadly, computer science) literature. There is value in studying not only the \textit{how} (i.e., how do we solve problem X), but also the \textit{why} (i.e., why does solution Y work). 
+
+Indeed, if you look closely at our approach, the underlying learner is a feedforward learner; the GHOST approach that we rely on used the theoretical results of \citet{montufar2014number} to choose the range for hyper-parameter options. Therefore, while the question of which data miner is better might be a question that interests theorists more, we still find value in that contribution.
+\end{response}
+
+\begin{formal}
+``For complex data, global….''. This is not understandable at all by a non-expert. What is a local treatment? What is a localized treatment? How do they map the current problem?
+\end{formal}
+
+\begin{response}{1a11}
+Agreed! We have added more text discussing this before mentioning those terms \citeresp{1a11.1}.
+\end{response}
+
+\begin{formal}
+I am surprised that there is no question on which predictors are the most important. I see a long list of treatments studied, but not any refence on what data these models run upon. Treating ML models as black-boxes does not help a lot in practice. In the end, what do we learn from this work, apart from the fact the accuracy of a GHOST2 model is better than any other model, for this specific dataset, for this specific problem, if the solution to the problem is not given. What are the actionable static analysis warnings?
+\end{formal}
+
+\begin{draftresponse}{1a12}
+This will depend on LIME's results.
+\end{draftresponse}
+
+\begin{formal}
+The writing the paper is excellent, the background on ML, statistics, data analysis is also excellent. The authors are real experts on that, and I believe that if they also try to shed light on some practical aspects of this problem, this can be an excellent paper.
+\end{formal}
+
+\begin{response}{1a13}
+Thank you for the kind words!
+\end{response}
+
+\begin{formal}
+In Section 5, I wonder: if I try 144 different treatments, in the end, wouldn’t always one be of great accuracy?
+\end{formal}
+
+\begin{response}{1a14}
+Yes, by definition. In Section \ref{rigg} (which is where the 144 number is mentioned), we aimed to reduce the number of those 144 that we needed to run by a process of elimination (i.e., if treatment A does not help, then do not try treatments that use A). That was the basis for our ablation study, whose treatments are shown in Table \ref{tab:treatments}. 
+\end{response}
+
+\begin{formal}
+Also, in Section 5, why are you ignoring completely the model. I would expect some presentation of how the model is built. What are the independent variables? How do you collect them? I only see how you calculate the dependent variable (if a warning is actionable)—see previous comment on this
+\end{formal}
+
+\begin{response}{1a15}
+Agreed--we did not talk much about the model itself. This was because the actual model is encapsulated in DODGE, and is a feedforward learner whose hyper-parameters are chosen based on theoretical deep learning literature. We have now added more text describing this \citeresp{1a15.1}
+\end{response}
+
+\subsection{Response to Reviewer 2}
+
+\begin{formal}
+It also seems like the entire paper is focused on Kang’s dataset of static analysis bugs and how to fix mislabelling in that dataset. This paper is more about data engineering to clean data from the bad dataset before feeding it into machine learning models. The title of the paper must also be appropriate to that. They can try to show their results on one more erroneous dataset.
+\end{formal}
+
+\begin{response}{2a1}
+We agree! Reviewer 1 also pointed out this issue with the paper title, and we have changed it now.
+\end{response}
+
+\begin{formal}
+The ordering is somewhat random smote -> ghost -> ghost -> smote -> smooth -> dodge. Also, this ordering is inspired by a paper that already performs smote+ ghost repeatedly. The contribution of the paper seems to be a mere application of already existing techniques just for the case of data in warnings of static analysis tools.
+\end{formal}
+
+\begin{response}{2a2}
+
+\end{response}
+
+\end{document}
+
+

@@ -1,0 +1,157 @@
+\section{Threats to Validity}
+\label{sec:threats}
+ 
+ 
+ As with any empirical study, biases can affect the final results. Therefore, any conclusions made from this work must be considered with the following issues in mind: 
+ 
+ {\em 1. Sampling bias } threatens any classification experiment; i.e., what matters there may not be true here. For example, the data sets used here comes prior work
+ and, possibly, if we explored other data sets we might reach other conclusions.
+On the other hand, {\em repeatability} is an important part of science so we argue
+that our decision to use the Kang et al. data is appropriate and respectful to both that prior work
+and the scientific method.   
+ 
+ {\em 2. Learner bias:} Machine learning is a large and active field and any single study can only use a small subset of the known  algorithms. Our choice of ``local learning'' tools was explained in \S\ref{rx}. That said, it is important to repeat the comments made there
+ that our SMOTEing, SMOOTHing, GHOSTing and DODGEing   operators
+ are but one set of  choice within a larger framework of possible approaches to instance, label, boundary, and parameter engineering (respectively).
+ As SE research matures, we foresee that our framework will become a workbench   within which researchers replace some/all of these treatments with better options. That said, in defence of the current options, we note that our ablation study showed that removing any of them can lead to worse results. 
+ 
+ 
+ 
+ {\em 3. Parameter bias}: Learners are controlled by parameters and the resulting performance can change dramatically if those parameters are changed. Accordingly,
+ in this paper, our recommended methods (from Table~\ref{rx}) includes parameter engineering methods to find good parameter settings for our different data sets.  
+ 
+ 
+ {\em 4. Evaluation bias:} This paper use four evaluation criteria (precision, AUC, false alarm rate, and recall) and it is certainly true that by other measures, our results might not work be seen to work as as well. In defence of our current selection, we note that we use these measures since they let us compare our new results to prior work (who reported their results using the same measures).
+ 
+ Also, to repeat a remark made previously, another evaluation bias was how we separated data into train/test.  In other papers, we have run repeated
+trials with multiple 80:20 splits for training:test data. This
+was not here since some of our data sets are too small (see
+the first few rows of Table 5) that any reduction in the
+training set size might disadvantage the learning process.
+Hence, the external validity claims of this paper come from
+patterns seen in eight different software projects.
+ 
+  
+
+\section{Discussion}
+\label{sec:discussion}
+
+This discussion section steps back from the above to make some more general points.
+
+
+
+We suggest that this paper should lead to a new way of training
+newcomers in software analytics:
+\bi
+\item
+Our results show that there is much value in decades-old learning technology
+(feedforward networks). Hence, we say that when we train newcomers to the field of software analytics,
+we should certainly train them in the latest techniques (deep learning, CodeBERT, etc).
+\item
+That said,
+we should also ensure that they know of prior work since (as shown above), sometimes
+those older methods still have currency. 
+For example,
+if some learner is faster to run, then it is easier to tune. 
+Hence, as shown above, it can be possible for old techniques to do better than new ones, just by tuning.  
+\ei
+   For future work, it would be useful to check what other SE domains
+    simpler, faster, learners  (plus some tuning)
+   out-perform more complex learning methods.
+
+
+That said, we offer the following cautionary note about tuning.
+Hyper-parameter  optimization (HPO, which  we have call ``parameter engineering'' in this paper)
+  has received much recent attention in the SE literature~\cite{agrawal2019dodge,yedida2021value,agrawal2021simpler} 
+We have shown here that reliance on {\em just} HPO can be foolhardy
+since better results can be obtained by the 
+judicious  use of HPO combined with more nuanced approaches that actually reflect the particulars of the
+current problem (e.g. our treatments that adjusted different parts of the data in different ways).
+As to how much to study the internals of a learner,
+we showed above  that there are many choices deep within a learner than can greatly improve predictive performance.  Hence we say that it   is very important to know the internals of a learner and how to adjust them.
+In our opinion, all too often, software engineers use AI tools as ``black boxes'' with little
+understanding of their internal structure. 
+
+Our results also  doubt some of the truisms of our field. 
+For example:
+\bi
+\item There is much recent work on big data research in SE, the premise being that ``the more data, the better''. We certainly do not dispute that but
+our  results do show that it is possible to achieve good results with very small data sets.
+\item
+There is much work in software analytics suggesting that  deep learning is a superior method for analyzing data \cite{yedida2021value, wang2018deep, li2017cclearner, white2015deep}. Yet when we tried that here, we found that a decades-old neural net architecture (feed-forward networks, discussed in Table \ref{tab:nnhere}) significantly out-performed deep learners. 
+\ei
+For newcomers to the field of software analytics,
+truisms   might be useful. But better results
+might be obtained when teams of data scientists
+combine to suggest  multiple techniques-- some of which ignore supposedly tried-and-true truisms.
+  
+ 
+  
+  
+\section{Conclusion}
+\label{sec:conclusion}
+
+Static analysis tools often
+suffer from a large number of false alarms that are deemed
+to be unactionable~\cite{tomassi2021real}. Hence, developers often ignore
+many of their warnings. Prior work by 
+Yang et al.~\cite{yang2021learning} attempted to build predictors for
+actionable warnings but,
+as shown by Kang et al.~\cite{kang2022detecting}, that study used
+poorly labelled data. 
+
+This paper extends the  Kang et al. result as follows.
+ Table~\ref{tab:initial_svm} shows that building
+ models for this domain is a challenging task. 
+ The discussion section of \S\ref{problem}
+ conjectured that for the purposes of detecting
+ actionable static code warnings, standard
+ data miners can not handle the complexities of
+ the   decision boundary. More specifically, 
+ we argued that:
+ \begin{quote}
+ {\em 
+ For complex data, \underline{\bf global} treatments  
+   perform worse  than \underline{\bf localized} treatments
+ which   adjust different parts of the  landscape in 
+ different ways.}
+ \end{quote}
+ \S\ref{rx} proposed four such localized treatments, 
+ which we called instance, parameter, label and boundary engineering.
+ 
+ These treatments were tested on the data generated by Kang et al.
+ (which in turn, was generated by fixing the prior missteps of Yang et al.).
+ On experimentation, it was shown that the combination of
+ all our treatments (in the ``A1'' results of 
+  Table~\ref{tab:treatments}) performed much better than than the prior
+  results seen in  Table~\ref{tab:initial_svm}. 
+ As to why these treatments before so well, the analysis
+ of Table~\ref{tab:fuzzy} showed that instance, parameter, label and boundary engineering
+ did in fact remove complex shapes in our decision boundaries.
+  As to the relative merits of instance versus parameter versus label versus boundary engineering,
+an ablation study showed that using all these treatments produces better predictions that 
+   alternative treatments that ignored any part.
+   
+   
+  
+  
+
+Finally, we comment here on the value of different teams working together.
+The specific result reported in this paper
+is about 
+how to recognize and avoid
+static code analysis false alarms. That said,
+there is a more general takeaway.
+Science is meant to be about a community critiquing and improving each other's ideas. We offer here a successful example of such a community interaction where teams from Singapore and the US successfully worked together. Initially, in a 2022 paper~\cite{kang2022detecting}, the Singapore team identified issues with the data that result in substantially lower performance of the previously-reported best predictor of actionable warnings~\cite{wang2018there, yang2021learning,yang2021understanding}. Subsequently, in this paper,
+both teams combined  to produce new results that clarified and improved the old work.
+That teamwork leads us to trying    methods which, according to the truisms of our field, should not have worked.   The teamwork that generated this paper
+  should be routine, and not some rare exceptional case.
+   
+  
+
+
+ 
+ 
+ 
+ 
+ 
